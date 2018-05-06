@@ -15,3 +15,9 @@ def index(request):
     page = request.GET.get('page')
     users = paginator.get_page(page)
     return render(request, 'index.html', {'users': users})
+
+
+def activate_user(request, username):
+    return render(request, 'chat/room.html', {
+        'room_name_json': mark_safe(json.dumps(room_name))
+    })

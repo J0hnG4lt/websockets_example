@@ -1,13 +1,16 @@
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <div class="user_pages">
     <span class="">
         Users
     </span>
-    <div class="users">
+    <div class="user_links">
         {% for user in users %}
             {# Each "user" is a User model object. #}
             
-            <a href="{{ user.username }}">
+            <a  data="{{ user.username }}"
+                href="" >
                 {{ user.username|upper }}
             </a> <br />
             
@@ -33,3 +36,27 @@
         {% endif %}
     </span>
 </div>
+
+<script>
+    
+    /*
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var active_users_socket = new WebSocket(ws_scheme + '://' + window.location.host + "" + window.location.pathname);
+    
+    
+    $('.user_links a').on('click', function(event) {
+        
+        var username = event.target.attributes.data.nodeValue;
+        
+        var message = {
+            handle: $('#handle').val(),
+            message: username,
+        };
+        
+        active_users_socket.send(JSON.stringify(message));
+        
+        return false;
+
+    });
+    */
+</script>

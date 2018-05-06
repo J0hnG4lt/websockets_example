@@ -28,9 +28,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ASGI_APPLICATION = 'websockets_example.routing.application'
+
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'active_users',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,3 +122,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+
+# Channel layer definitions
+# http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
+CHANNEL_LAYERS = {
+    "default": {
+        # This example app uses the Redis channel layer implementation asgi_redis
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
