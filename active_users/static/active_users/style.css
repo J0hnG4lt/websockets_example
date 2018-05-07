@@ -1,0 +1,23 @@
+.user_links {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    height: 100%;
+    width : 100%;
+}
+
+.column {
+    flex-basis: 25%;
+    margin: auto;  /* Magic! */
+    margin-bottom: 10px;
+    width : 25%;
+    height: 80px;
+    background-color : coral;
+    
+}
+
+#new_user_form{
+    flex-basis: 100%;
+    background-color : orange;
+}

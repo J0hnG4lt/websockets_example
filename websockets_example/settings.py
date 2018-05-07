@@ -124,6 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+
 redis_host = os.environ.get('REDIS_HOST', 'localhost')
 
 # Channel layer definitions
