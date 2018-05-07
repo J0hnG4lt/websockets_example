@@ -97,7 +97,7 @@
 <script>
     
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var active_users_socket = new WebSocket("ws" + '://' 
+    var active_users_socket = new WebSocket(ws_scheme + '://' 
                 + window.location.host 
                 + window.location.pathname);
     
