@@ -12,7 +12,14 @@
             <a  data="{{ user.username }}"
                 href="" >
                 {{ user.username|upper }}
-            </a> <br />
+            </a> 
+            
+            <span id="{{ user.username }}"
+                  hidden>
+                This user is active
+            </span>
+            
+            <br />
             
             
         {% endfor %}
@@ -39,24 +46,62 @@
 
 <script>
     
-    /*
-    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var active_users_socket = new WebSocket(ws_scheme + '://' + window.location.host + "" + window.location.pathname);
     
     
     $('.user_links a').on('click', function(event) {
         
+        if (window.active_users_socket !== undefined){
+            
+            window.active_users_socket.close();
+            alert(window.active_user_socket);
+            $('.user_links span[id="'+window.username+'"]').attr("hidden", true);
+        }
+        
         var username = event.target.attributes.data.nodeValue;
         
+        
+        
+        var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        var active_users_socket = new WebSocket(ws_scheme + '://' 
+            + window.location.host 
+            + window.location.pathname
+            + username);
+        /*
         var message = {
             handle: $('#handle').val(),
             message: username,
         };
-        
-        active_users_socket.send(JSON.stringify(message));
+        */
+        //active_users_socket.send(JSON.stringify(message));
+        console.log(event.target.attributes)
+        window.active_users_socket = active_users_socket;
+        window.username = username;
+        //window.active_user_socket.onclose = function () {};
+        window.active_users_socket.onmessage = function(event2) {
+            
+            var data = JSON.parse(event2.data);
+            console.log(data["message"]);
+            
+            var new_active_user = data["message"];
+            var status = data["status"];
+            console.log(status);
+            if (status === "active"){
+                $('.user_links span[id="'+new_active_user+'"]').attr("hidden", false);     }
+            else if (status === "inactive") {
+                $('.user_links span[id="'+new_active_user+'"]').attr("hidden", true);
+            }
+            
+            /*
+            $('#chat').append('<tr>' 
+                + '<td>' + data.timestamp + '</td>' 
+                + '<td>' + data.handle + '</td>'
+                + '<td>' + data.message + ' </td>'
+            + '</tr>');
+            */
+        };
         
         return false;
 
     });
-    */
+    
 </script>
