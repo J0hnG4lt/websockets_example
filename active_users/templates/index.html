@@ -30,7 +30,7 @@
             
             <div class="column">
             
-            <a  data="{{ user.username }}"
+            <a  data="{{ user.id }}"
                 href="" >
                 {{ user.username|upper }}
             </a> 
@@ -72,8 +72,8 @@
                 <form action="edit_user/" method="post">
                     {% csrf_token %}
                     {{ form }}
-                    <input type="hidden" value="{{ user.username }}'" />
-                    <input type="submit" value="Edit" />
+                    <input type="hidden" name="previoususername" value="{{ user.username }}" />
+                    <input class="editb" type="submit" value="Edit" />
                 </form>
                 
             </div>
@@ -103,23 +103,46 @@
     
     $('.user_links a').on('click', function(event) {
         
-        if (window.username !== undefined){
+        var userid = event.target.attributes.data.nodeValue;
+        var username = undefined;
+        
+        
+        console.log("TESTT");
+        
+        $.ajax({
+        url: '/get_user/'+userid,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            
+          //d = JSON.parse(data);
+          username = data["username"]
+        }
+      });
+        
+        console.log(username);
+        
+        if ((window.username !== undefined) && (window.userid !== userid)){
             
             //send a disconect message from the previous user
             var message = {"message" : window.username,
+                           "userid" : window.userid,
                            "status" : "inactive",
                            "exclude" : 1 }
             
             active_users_socket.send(JSON.stringify(message));
             
-            window.username = undefined;
+            
             
             $('.user_links span[id="'+window.username+'"]').attr("hidden", true);
+            
+            window.username = username;
         }
         
-        var username = event.target.attributes.data.nodeValue;
+
         
         var message = {"message" : username,
+                       "userid" : userid,
                        "status" : "active",
                        "include" : 1 }
         
@@ -128,6 +151,7 @@
         console.log(event.target.attributes)
         
         window.username = username;
+        window.userid = userid;
         
         
         return false;
@@ -149,6 +173,8 @@
         }
         
     };
+    
+
     
     
 </script>

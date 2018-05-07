@@ -36,6 +36,11 @@ HINT: try to use websockets to share the active/inactive status.
 - [Channels](https://channels.readthedocs.io/en/latest/index.html) (>= v2.0)
 - [Channels Redis](https://github.com/django/channels_redis) (>= v2.1.1)
 
+# Installing requirements
+
+```sh
+$ pip3 install -r requirements.txt
+```
 
 # Running Tests
 
@@ -44,6 +49,7 @@ Run the following commands in the root folder:
 ```sh
 $ python3 manage.py makemigrations
 $ python3 manage.py migrate
+$ python3 manage.py collectstatic
 $ python3 manage.py runserver
 ```
 
