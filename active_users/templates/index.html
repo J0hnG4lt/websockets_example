@@ -13,11 +13,20 @@
                 href="" >
                 {{ user.username|upper }}
             </a> 
+            {% if user.active %}
+            
+            <span id="{{ user.username }}">
+                This user is active
+            </span>
+            
+            {% else %}
             
             <span id="{{ user.username }}"
                   hidden>
                 This user is active
             </span>
+            
+            {% endif %}
             
             <br />
             
@@ -25,7 +34,7 @@
         {% endfor %}
     </div>
 </div>
-
+<!--
 <div class="pagination">
     <span class="step-links">
         {% if users.has_previous %}
@@ -43,65 +52,61 @@
         {% endif %}
     </span>
 </div>
-
+-->
 <script>
     
-    
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var active_users_socket = new WebSocket(ws_scheme + '://' 
+                + window.location.host 
+                + window.location.pathname);
     
     $('.user_links a').on('click', function(event) {
         
-        if (window.active_users_socket !== undefined){
+        if (window.username !== undefined){
             
-            window.active_users_socket.close();
+            //send a disconect message from the previous user
+            var message = {"message" : window.username,
+                           "status" : "inactive",
+                           "exclude" : 1 }
+            
+            active_users_socket.send(JSON.stringify(message));
+            
+            window.username = undefined;
             
             $('.user_links span[id="'+window.username+'"]').attr("hidden", true);
         }
         
         var username = event.target.attributes.data.nodeValue;
         
+        var message = {"message" : username,
+                       "status" : "active",
+                       "include" : 1 }
         
+        active_users_socket.send(JSON.stringify(message));
         
-        var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        var active_users_socket = new WebSocket(ws_scheme + '://' 
-            + window.location.host 
-            + window.location.pathname
-            + username);
-        /*
-        var message = {
-            handle: $('#handle').val(),
-            message: username,
-        };
-        */
-        //active_users_socket.send(JSON.stringify(message));
         console.log(event.target.attributes)
-        window.active_users_socket = active_users_socket;
+        
         window.username = username;
-        //window.active_user_socket.onclose = function () {};
-        window.active_users_socket.onmessage = function(event2) {
-            
-            var data = JSON.parse(event2.data);
-            console.log(data["message"]);
-            
-            var new_active_user = data["message"];
-            var status = data["status"];
-            console.log(status);
-            if (status === "active"){
-                $('.user_links span[id="'+new_active_user+'"]').attr("hidden", false);     }
-            else if (status === "inactive") {
-                $('.user_links span[id="'+new_active_user+'"]').attr("hidden", true);
-            }
-            
-            /*
-            $('#chat').append('<tr>' 
-                + '<td>' + data.timestamp + '</td>' 
-                + '<td>' + data.handle + '</td>'
-                + '<td>' + data.message + ' </td>'
-            + '</tr>');
-            */
-        };
+        
         
         return false;
 
     });
+
+    active_users_socket.onmessage = function(event2) {
+        
+        var data = JSON.parse(event2.data);
+        console.log(data["message"]);
+        
+        var new_active_user = data["message"];
+        var status = data["status"];
+        console.log(status);
+        if (status === "active"){
+            $('.user_links span[id="'+new_active_user+'"]').attr("hidden", false);     }
+        else if (status === "inactive") {
+            $('.user_links span[id="'+new_active_user+'"]').attr("hidden", true);
+        }
+        
+    };
     
 </script>
