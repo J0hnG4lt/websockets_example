@@ -3,6 +3,7 @@
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
+from active_users.models import User
 
 class ActiveUserConsumer(WebsocketConsumer):
 
@@ -12,6 +13,10 @@ class ActiveUserConsumer(WebsocketConsumer):
         
         self.username = remaining_path_elems[1]
         
+        self.current_user = User.objects.get(username = self.username)
+        
+        self.current_user.active = True
+        self.current_user.save()
         
         async_to_sync(self.channel_layer.group_add)(
             "active",
@@ -35,6 +40,8 @@ class ActiveUserConsumer(WebsocketConsumer):
     
     def disconnect(self, close_code):
         # Send message to room group
+        self.current_user.active = False
+        self.current_user.save()
         async_to_sync(self.channel_layer.group_send)(
             "active",
             {

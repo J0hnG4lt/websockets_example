@@ -5,9 +5,11 @@ from django.db import models
 class User(models.Model):
     
     username = models.CharField(max_length=200)
+    active = models.BooleanField(default=False)
     
     def __str__(self) :
-        return "This user is {}".format(self.username)
+        return "This user is {}. Active: {}".format(self.username,
+                                                    self.active)
 
 
     
