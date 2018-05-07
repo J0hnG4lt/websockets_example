@@ -29,6 +29,7 @@ HINT: try to use websockets to share the active/inactive status.
 - [Python](https://www.python.org/) (>= v3.5.2)
 - [Django](https://www.djangoproject.com/) (>= v2.0)
 - [Redis](https://redis.io/topics/quickstart) (>= v3.0.6)
+- [Whitenoise](http://whitenoise.evans.io/en/stable/) (>= v3.3.1)
 
 # Django Requirements
 
