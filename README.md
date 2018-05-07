@@ -26,14 +26,14 @@ HINT: try to use websockets to share the active/inactive status.
 
 # Requirements
 
-- [Python](https://www.python.org/) (> v3.5)
-- [Django](https://www.djangoproject.com/) (> v2.0)
-- [Redis](https://redis.io/topics/quickstart) (> v3.0.6)
+- [Python](https://www.python.org/) (>= v3.5.2)
+- [Django](https://www.djangoproject.com/) (>= v2.0)
+- [Redis](https://redis.io/topics/quickstart) (>= v3.0.6)
 
 # Django Requirements
 
-- [Channels](https://channels.readthedocs.io/en/latest/index.html) (> v2.0)
-- [Channels Redis](https://github.com/django/channels_redis)
+- [Channels](https://channels.readthedocs.io/en/latest/index.html) (>= v2.0)
+- [Channels Redis](https://github.com/django/channels_redis) (>= v2.1.1)
 
 
 # Running Tests
