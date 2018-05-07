@@ -13,20 +13,26 @@
                 href="" >
                 {{ user.username|upper }}
             </a> 
-            {% if user.active %}
             
-            <span id="{{ user.username }}">
-                This user is active
-            </span>
+                {% if user.active %}
+                
+                <span id="{{ user.username }}">
+                    This user is active
+                </span>
+                
+                {% else %}
+                
+                <span id="{{ user.username }}"
+                      hidden>
+                    This user is active
+                </span>
+                
+                {% endif %}
             
-            {% else %}
-            
-            <span id="{{ user.username }}"
-                  hidden>
-                This user is active
-            </span>
-            
-            {% endif %}
+            <a  
+                href="delete/{{ user.username }}" >
+                Delete
+            </a>
             
             <br />
             
@@ -34,6 +40,11 @@
         {% endfor %}
     </div>
 </div>
+<form action="add_user/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
 <!--
 <div class="pagination">
     <span class="step-links">

@@ -45,16 +45,17 @@ class ActiveUserConsumer(WebsocketConsumer):
     
     def disconnect(self, close_code):
         # Send message to room group
-        self.current_user.active = False
-        self.current_user.save()
-        async_to_sync(self.channel_layer.group_send)(
-            "active",
-            {
-                'type': 'receive',
-                'message': self.username,
-                'status' : "inactive"
-            }
-        )
+        if hasattr(self, "current_user") :
+            self.current_user.active = False
+            self.current_user.save()
+            async_to_sync(self.channel_layer.group_send)(
+                "active",
+                {
+                    'type': 'receive',
+                    'message': self.username,
+                    'status' : "inactive"
+                }
+            )
         
     def receive(self, text_data):
         
