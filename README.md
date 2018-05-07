@@ -30,6 +30,10 @@ HINT: try to use websockets to share the active/inactive status.
 - [Django](https://www.djangoproject.com/) (>= v2.0)
 - [Redis](https://redis.io/topics/quickstart) (>= v3.0.6)
 - [Whitenoise](http://whitenoise.evans.io/en/stable/) (>= v3.3.1)
+- [dj_database_url](https://github.com/kennethreitz/dj-database-url) (>= v0.5.0)
+- [psycopg2](http://initd.org/psycopg/)
+- [gunicorn](http://docs.gunicorn.org/en/stable/install.html)
+
 
 # Django Requirements
 
